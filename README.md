@@ -2,7 +2,7 @@
 
 TFJS port of InsightFace
 
-**Work-in-Progress, release expected soon**
+**Work-in-Progress, release expected soon (demo and compare app and model weights)**
 ## Models
 
 Repository contains pretrained **TFJS graph models** for the following **InsightFace** variations  
@@ -21,6 +21,15 @@ Demo app in `/src` uses `Human` library to detect and crop faces before running 
 as well as using optimized distance methods present in `Human` to measure face similarities given detected face descriptors (embeddings)  
 
 And yes, you can use any other face detection method  
+
+### Samples
+
+GitHub repository is void of sample images, beforing running demo place any number of images of any resolution containing one or more faces into `/assets/samples/`
+### Run
+
+Use built-in dev server to compile sources and start a web server:
+
+> npm run dev
 
 ## Credits
 
