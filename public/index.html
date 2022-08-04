@@ -17,8 +17,25 @@
   <link rel="icon" sizes="256x256" href="../assets/icons/dash-256.png">
   <link rel="apple-touch-icon" href="../assets/icons/dash-256.png">
   <link rel="apple-touch-startup-image" href="../assets/icons/dash-256.png">
-  <link rel="stylesheet" href="index.css">
   <script src="../dist/index.js"></script>
+  <style>
+    img { object-fit: contain; }
+    @font-face { font-family: 'CenturyGothic'; font-display: swap; font-style: normal; font-weight: 400; src: local('CenturyGothic'), url('/assets/century-gothic.ttf') format('truetype'); }
+    html { font-family: 'CenturyGothic', 'Segoe UI'; font-size: 22px; font-variant: small-caps; }
+    body { margin: 24px; background: black; color: white; width: 100vw; height: 100vh; overflow: hidden; }
+    ::-webkit-scrollbar { height: 8px; border: 0; border-radius: 0; }
+    ::-webkit-scrollbar-thumb { background: grey }
+    ::-webkit-scrollbar-track { margin: 3px; }
+
+    .header { display: block; }
+    .nav { display: block; }
+    .main { display: block; }
+    .footer { display: block; }
+    .aside { display: block; }
+
+    .face { width: 128px; height: 128px; margin: 2px; padding: 2px; cursor: grab; transform: scale(1.00); transition : all 0.3s ease; }
+    .face:hover { filter: grayscale(1); transform: scale(1.08); transition : all 0.3s ease; }   
+  </style>
 </head>
 <body>
   <noscript><h1>javascript is required</h1></noscript>
@@ -29,7 +46,13 @@
     <div id="header" class="header"></div>
   </header>
   <main>
-    <div id="main" class="main"></div>
+    <div id="main" class="main">
+      <div class="text" id="title"></div>
+      <div class="text">Input Images</div>
+      <div id="images" style="display: flex; width: 98vw; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; margin-bottom: 24px"></div>
+      <div class="text">Faces</div>
+      <div id="faces" style="height: 80vh; width: 98vw; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth; "></div>
+    </div>
   </main>
   <footer>
     <div id="footer" class="footer"></div>

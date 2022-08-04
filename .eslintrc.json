@@ -45,6 +45,7 @@
     "no-plusplus":"off",
     "no-param-reassign":"off",
     "no-restricted-syntax": "off",
+    "no-regex-spaces": "off",
     "object-curly-newline":"off",
     "prefer-destructuring":"off",
     "prefer-template":"off",

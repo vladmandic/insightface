@@ -13,9 +13,9 @@ var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __commonJS = (cb, mod4) => function __require() {
   return mod4 || (0, cb[__getOwnPropNames(cb)[0]])((mod4 = { exports: {} }).exports, mod4), mod4.exports;
 };
-var __export = (target, all4) => {
-  for (var name in all4)
-    __defProp(target, name, { get: all4[name], enumerable: true });
+var __export = (target, all5) => {
+  for (var name in all5)
+    __defProp(target, name, { get: all5[name], enumerable: true });
 };
 var __copyProps = (to2, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -40808,12 +40808,12 @@ function all2(args) {
   const aVals = backend2.data.get($x.dataId).values;
   for (let i = 0; i < vals.length; ++i) {
     const offset = i * reduceSize;
-    let all4 = aVals[offset];
+    let all5 = aVals[offset];
     for (let j = 0; j < reduceSize; ++j) {
       const value = aVals[offset + j];
-      all4 = all4 && value;
+      all5 = all5 && value;
     }
-    vals[i] = all4;
+    vals[i] = all5;
   }
   if (permutedAxes != null) {
     backend2.disposeIntermediateTensorInfo($x);
@@ -64056,21 +64056,112 @@ var humanConfig = {
   debug: false,
   modelBasePath: "node_modules/@vladmandic/human/models",
   filter: { enabled: false, equalization: false, flip: false },
-  face: { enabled: true, detector: { rotation: true }, mesh: { enabled: true }, attention: { enabled: false }, iris: { enabled: false }, description: { enabled: false }, emotion: { enabled: false } },
+  face: { enabled: true, detector: { return: true, rotation: true, maxDetected: 50, iouThreshold: 0.01, minConfidence: 0.2 }, mesh: { enabled: true }, attention: { enabled: false }, iris: { enabled: false }, description: { enabled: true }, emotion: { enabled: false } },
   body: { enabled: false },
   hand: { enabled: false },
   object: { enabled: false },
-  gesture: { enabled: false }
+  gesture: { enabled: false },
+  segmentation: { enabled: false }
 };
-async function main() {
-  const human = new Mo(humanConfig);
-  log5({ tf: version, human: human.version });
-  for (const url of modelUrls) {
-    const model2 = await loadGraphModel(url);
-    models.push(model2);
+var human = new Mo(humanConfig);
+var all4 = [];
+function title(msg) {
+  document.getElementById("title").innerHTML = msg;
+}
+async function selectFaceCanvas(face) {
+  const canvases = document.getElementsByClassName("face");
+  title(`analyzing similarities of ${canvases.length} faces`);
+  for (const canvas of Array.from(canvases)) {
+    const current = all4[canvas["tag"].sample][canvas["tag"].face];
+    const similarity = human.similarity(face.embedding, current.embedding);
+    canvas["tag"].similarity = similarity;
+    await human.tf.browser.toPixels(current.tensor, canvas);
+    const ctx = canvas.getContext("2d");
+    ctx.font = 'small-caps 1rem "CenturyGothic"';
+    ctx.fillStyle = "rgba(0, 0, 0, 1)";
+    ctx.fillText(`${(100 * similarity).toFixed(1)}%`, 3, 23);
+    ctx.fillStyle = "rgba(255, 255, 255, 1)";
+    ctx.fillText(`${(100 * similarity).toFixed(1)}%`, 4, 24);
+    ctx.fillText(`${current.age}y ${(100 * (current.genderScore || 0)).toFixed(1)}% ${current.gender}`, 4, canvas.height - 6);
   }
+  const sorted = document.getElementById("faces");
+  [...Array.from(sorted.children)].sort((a, b4) => parseFloat(b4["tag"].similarity) - parseFloat(a["tag"].similarity)).forEach((canvas) => sorted.appendChild(canvas));
+  title("faces sorted by similarity");
+}
+async function analyzeResults(index, res, fileName) {
+  var _a, _b, _c;
+  all4[index] = [];
+  for (const i in res.face) {
+    if (!res.face[i].tensor)
+      continue;
+    if ((res.face[i].faceScore || 0) < (((_c = (_b = (_a = human.config) == null ? void 0 : _a.face) == null ? void 0 : _b.detector) == null ? void 0 : _c.minConfidence) || 0))
+      continue;
+    all4[index][i] = { ...res.face[i], embedding: res.face[i].embedding, fileName, embeddings: {} };
+    all4[index][i].embeddings["human-faceres"] = res.face[i].embedding;
+    const canvas = document.createElement("canvas");
+    canvas["tag"] = { sample: index, face: i, source: fileName };
+    canvas.width = 200;
+    canvas.height = 200;
+    canvas.className = "face";
+    canvas.title = `
+      source: ${fileName}
+      score: ${Math.round(100 * res.face[i].boxScore)}% detection ${Math.round(100 * res.face[i].faceScore)}% analysis
+      age: ${res.face[i].age} years
+      gender: ${Math.round(100 * res.face[i].genderScore)}% ${res.face[i].gender}
+    `.replace(/  /g, " ");
+    await human.tf.browser.toPixels(res.face[i].tensor, canvas);
+    const ctx = canvas.getContext("2d");
+    if (!ctx)
+      return;
+    ctx.font = 'small-caps 1rem "CenturyGothic"';
+    ctx.fillStyle = "rgba(255, 255, 255, 1)";
+    ctx.fillText(`${res.face[i].age}y ${(100 * (res.face[i].genderScore || 0)).toFixed(1)}% ${res.face[i].gender}`, 4, canvas.height - 6);
+    document.getElementById("faces").appendChild(canvas);
+    canvas.addEventListener("click", (evt) => {
+      var _a2, _b2, _c2, _d, _e2;
+      selectFaceCanvas(all4[(_a2 = evt.target) == null ? void 0 : _a2["tag"].sample][(_b2 = evt.target) == null ? void 0 : _b2["tag"].face]);
+      log5((_c2 = evt.target) == null ? void 0 : _c2["tag"], all4[(_d = evt.target) == null ? void 0 : _d["tag"].sample][(_e2 = evt.target) == null ? void 0 : _e2["tag"].face]);
+    });
+  }
+}
+async function analyzeImage(index, image2, length) {
+  const numFaces = all4.reduce((prev, curr) => prev + curr.length, 0);
+  title(`analyzing input images |  ${Math.round(100 * index / length)}% [${index}/${length}] | found ${numFaces} faces`);
+  return new Promise((resolve) => {
+    const img = new Image(128, 128);
+    img.onload = () => {
+      document.getElementById("images").appendChild(img);
+      human.detect(img).then((res) => {
+        analyzeResults(index, res, image2);
+        resolve(true);
+      });
+    };
+    img.onerror = () => {
+      log5("analyzeImage error:", index + 1, image2);
+      resolve(false);
+    };
+    img.title = image2;
+    img.src = encodeURI(image2);
+  });
+}
+async function main() {
+  log5({ tf: version, human: human.version, backend: getBackend() });
+  title("loading models");
   await human.load();
-  await human.warmup();
+  for (const url of modelUrls)
+    models.push(await loadGraphModel(url));
+  log5({ loaded: models.map((model2) => model2.modelUrl) });
+  title("enumerating input images");
+  const res = await fetch("../assets/samples");
+  const dir = res && res.ok ? await res.json() : [];
+  const images = dir.filter((img) => img.endsWith(".jpg"));
+  const t0 = human.now();
+  for (let i = 0; i < images.length; i++)
+    await analyzeImage(i, images[i], images.length);
+  const t12 = human.now();
+  const faces = all4.reduce((prev, curr) => prev + curr.length, 0);
+  log5({ images: all4.length, faces, time: Math.round(t12 - t0) });
+  title(`extracted ${faces} faces from ${all4.length} images in ${Math.round(t12 - t0)} ms`);
 }
 window.onload = main;
 //# sourceMappingURL=index.js.map
