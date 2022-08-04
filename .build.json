@@ -1,0 +1,53 @@
+{
+  "log": {
+    "enabled": true,
+    "debug": false,
+    "console": true,
+    "output": ""
+  },
+  "profiles": {
+    "development": ["serve", "watch", "lint", "compile"]
+  },
+  "lint": {
+    "locations": [ "*.json", "src/**/*.ts" ],
+    "rules": { }
+  },
+  "serve": {
+    "sslKey": "node_modules/@vladmandic/build/cert/https.key",
+    "sslCrt": "node_modules/@vladmandic/build/cert/https.crt",
+    "httpPort": 10050,
+    "httpsPort": 10051,
+    "documentRoot": "",
+    "defaultFolder": "public/",
+    "defaultFile": "index.html",
+    "cors": false
+  },
+  "build": {
+    "global": {
+      "target": "es2018",
+      "sourcemap": true,
+      "treeShaking": true,
+      "ignoreAnnotations": true,
+      "minify": false,
+      "banner": { "js": "/*\n  insightface\n  homepage: <https://github.com/vladmandic/insightface>\n  author: <https://github.com/vladmandic>'\n*/\n" }
+    },
+    "development": {
+      "minify": true
+    },
+    "targets": [
+      {
+        "name": "client",
+        "format": "esm",
+        "platform": "browser",
+        "input": "src/index.ts",
+        "output": "dist/index.js"
+      }
+    ]
+  },
+  "watch": {
+    "locations": [ "src/**/*" ]
+  },
+  "typescript": {
+    "allowJs": false
+  }
+}

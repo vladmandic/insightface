@@ -1,0 +1,46 @@
+{
+  "name": "@vladmandic/insightface",
+  "version": "0.0.1",
+  "description": "insightface for tfjs",
+  "sideEffects": false,
+  "main": "",
+  "author": "Vladimir Mandic <mandic00@live.com>",
+  "bugs": {
+    "url": "https://github.com/vladmandic/insightface/issues"
+  },
+  "homepage": "https://vladmandic.github.io/insightface/index.html",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vladmandic/insightface.git"
+  },
+  "scripts": {
+    "dev": "build --profile development"
+  },
+  "keywords": [
+    "insightface",
+    "face-recognition",
+    "tensorflow",
+    "tfjs"
+  ],
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "@vladmandic/build": "^0.7.8",
+    "esbuild": "^0.14.51",
+    "eslint": "8.20.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-html": "^7.1.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-json": "^3.1.0",
+    "tslib": "^2.4.0",
+    "typescript": "4.7.4"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^3.19.0",
+    "@vladmandic/human": "github:vladmandic/human"
+  }
+}
