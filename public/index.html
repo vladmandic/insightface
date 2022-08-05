@@ -23,6 +23,7 @@
     @font-face { font-family: 'CenturyGothic'; font-display: swap; font-style: normal; font-weight: 400; src: local('CenturyGothic'), url('/assets/century-gothic.ttf') format('truetype'); }
     html { font-family: 'CenturyGothic', 'Segoe UI'; font-size: 22px; font-variant: small-caps; }
     body { margin: 24px; background: black; color: white; width: 100vw; height: 100vh; overflow: hidden; }
+    select { font-size: 1rem; font-variant: small-caps; }
     ::-webkit-scrollbar { height: 8px; border: 0; border-radius: 0; }
     ::-webkit-scrollbar-thumb { background: grey }
     ::-webkit-scrollbar-track { margin: 3px; }
@@ -33,8 +34,11 @@
     .footer { display: block; }
     .aside { display: block; }
 
+    .faces { height: 80vh; width: 98vw; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth; }
     .face { width: 128px; height: 128px; margin: 2px; padding: 2px; cursor: grab; transform: scale(1.00); transition : all 0.3s ease; }
     .face:hover { filter: grayscale(1); transform: scale(1.08); transition : all 0.3s ease; }   
+    .images { display: flex; width: 98vw; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; margin-bottom: 24px; }
+    .select { position: fixed; top: 20px; right: 20px; }
   </style>
 </head>
 <body>
@@ -47,11 +51,15 @@
   </header>
   <main>
     <div id="main" class="main">
-      <div class="text" id="title"></div>
-      <div class="text">Input Images</div>
-      <div id="images" style="display: flex; width: 98vw; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; margin-bottom: 24px"></div>
-      <div class="text">Faces</div>
-      <div id="faces" style="height: 80vh; width: 98vw; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth; "></div>
+      <div id="title"></div>
+      <div class="select">
+        <label for="embeddings">embeddings method</label>
+        <select name="embeddings" id="embeddings"></select>
+      </div>
+      <div style="margin-top: 20px">images</div>
+      <div id="images" class="images"></div>
+      <div>faces</div>
+      <div id="faces" class="faces"></div>
     </div>
   </main>
   <footer>
