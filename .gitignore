@@ -1,6 +1,5 @@
 pnpm-lock.yaml
 node_modules
-*.bin
 *.map
 /models/keras/*
 /models/saved/*
