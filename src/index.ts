@@ -20,6 +20,8 @@ const humanConfig: Partial<Config> = { // user configuration for human, used to 
     iris: { enabled: false },
     description: { enabled: true },
     emotion: { enabled: false },
+    // mobilefacenet: { enabled: true, modelPath: 'https://vladmandic.github.io/human-models/models/mobilefacenet.json' }, // uncomment to enable human mobilefacenet instead of default human faceres model
+    // insightface: { enabled: true, modelPath: 'https://vladmandic.github.io/insightface/models/insightface-mobilenet-swish.json' }, // uncomment to enable human implementation of insightface instead of default human faceres model
   },
   body: { enabled: false },
   hand: { enabled: false },
@@ -37,7 +39,6 @@ interface Face extends FaceResult {
 }
 
 const all: Array<Face[]> = []; // array that will hold all detected faces
-// const db: Array<{ source: string, embedding: number[] }> = []; // array that holds all known faces
 
 function title(msg) {
   (document.getElementById('title') as HTMLDivElement).innerHTML = msg;
@@ -87,7 +88,7 @@ async function analyzeResults(index: number, res: Result, fileName: string) {
     if (!res.face[i].tensor) continue; // did not get valid results
     if ((res.face[i].faceScore || 0) < (human.config?.face?.detector?.minConfidence || 0)) continue; // face analysis score too low
     all[index][i] = { ...res.face[i], embedding: res.face[i].embedding as number[], fileName, embeddings: {} };
-    all[index][i].embeddings['human-faceres'] = res.face[i].embedding as number[];
+    all[index][i].embeddings['human-default'] = res.face[i].embedding as number[];
     const canvas = document.createElement('canvas');
     canvas['tag'] = { sample: index, face: i, source: fileName };
     canvas.width = 200;
@@ -172,7 +173,7 @@ async function analyzeEmbeddings() {
     }
     title(`calculating embeddings | ${Math.round(100 * i / all.length)}% [${i}/${all.length}]`);
   }
-  let total = { ms: 0, i: 0, html: '<option value="human-faceres" default>human-faceres</option>' };
+  let total = { ms: 0, i: 0, html: '<option value="human-default" default>human-default</option>' };
   for (const model of models) {
     log({ model: model.name, total: model.perf, avg: model.perf / (model.i - 1), count: model.i });
     total = {

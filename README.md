@@ -7,6 +7,7 @@ TFJS port of InsightFace
 Repository contains pretrained **TFJS graph models** for the following **InsightFace** variations  
 
 - `human-faceres`: *included for reference*, 6.7MB weights
+- `human-mobilefacenet`: *included for reference*, 5.0MB weights
 - `insightface-mobilenet-emore`: 6.7MB weights, 1.6ms avg
 - `insightface-mobilenet-swish`: 12MB weights, 3.0ms avg
 - `insightface-ghostnet-strides1`: 7.8MB weighs, 9.3ms avg
