@@ -27,21 +27,19 @@
     "tfjs"
   ],
   "devDependencies": {
-    "@tensorflow/tfjs": "^3.19.0",
-    "@typescript-eslint/eslint-plugin": "^5.33.0",
-    "@typescript-eslint/parser": "^5.33.0",
-    "@vladmandic/build": "^0.7.8",
-    "@vladmandic/human": "^2.9.2",
-    "esbuild": "^0.15.0",
-    "eslint": "8.21.0",
+    "@tensorflow/tfjs": "^3.20.0",
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "@typescript-eslint/parser": "^5.37.0",
+    "@vladmandic/build": "^0.7.12",
+    "@vladmandic/human": "^2.10.2",
+    "esbuild": "^0.15.7",
+    "eslint": "8.23.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-html": "^7.1.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-json": "^3.1.0",
     "seedrandom": "^3.0.5",
     "tslib": "^2.4.0",
-    "typescript": "4.7.4"
-  },
-  "dependencies": {
+    "typescript": "4.8.3"
   }
 }
